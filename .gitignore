@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+venv/
+.venv/
+
+# Environment files
+.env
+.env.*
+Backend/.env
+Frontend/.env
+
+# Node / React
+node_modules/
+Frontend/node_modules/
+dist/
+Frontend/dist/
+
+# IDE / OS
+.vscode/
+.DS_Store
+
+# Project artifacts
+*.zip
+backup.sql
+jwt_token

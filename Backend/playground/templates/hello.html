@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Products List</title>
+</head>
+<body>
+    <h1>Hello {{ name }}!</h1>
+
+    <h2>Products:</h2>
+    <ul>
+        {{ result }}
+        {% comment %} {% for order in orders %}
+            <li>{{ order.id }} - {{ order.customer.first_name }}</li> {% endcomment %}
+            
+            {% comment %} <li>{{ product.id }} - {{ product.collection.title }} </li> {% endcomment %}
+            {% comment %} <li>{{ product.id }} - {{ product.collection.title }} </li> {% endcomment %}
+            {% comment %} <li>{{ product.id }} | {{ product.title }} | ${{ product.price }}</li> {% endcomment %}
+        {% comment %} {% empty %}
+            <li>No products found.</li>
+        {% endfor %} {% endcomment %}
+    </ul>
+</body>
+</html>
