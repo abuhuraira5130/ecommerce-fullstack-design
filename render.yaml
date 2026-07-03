@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: ecommerce-fullstack-design-backend
+    env: python
+    rootDir: Backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn myproject.wsgi:application
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
