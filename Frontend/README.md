@@ -33,4 +33,4 @@ npm run preview
 
 - Recommended: Vercel / Netlify for frontend
 - Set environment variable:
-	- `VITE_API_BASE_URL=https://<your-backend-domain>`
+	- `VITE_API_BASE_URL=https://ecommerce-fullstack-design-backend-production-04af.up.railway.app`

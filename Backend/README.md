@@ -21,13 +21,14 @@ Planned additions:
 
 ## Production deploy
 
-Recommended backend host: Render
+Recommended backend host: Railway
 
 Required environment variables:
 - `DEBUG=False`
 - `SECRET_KEY=<production-secret>`
 - `DATABASE_URL=<Neon postgres url>`
-- `ALLOWED_HOSTS=<render-domain>,localhost,127.0.0.1`
+- `FRONTEND_URL=https://<vercel-domain>`
+- `ALLOWED_HOSTS` is auto-filled from Railway's public domain, but you can also set it manually to your Railway service host
 - `CSRF_TRUSTED_ORIGINS=https://<vercel-domain>`
 - `CORS_ALLOWED_ORIGINS=https://<vercel-domain>`
 
@@ -37,3 +38,4 @@ Start command:
 Railway note:
 - Set the service root directory to `Backend`
 - Railway can use the `Procfile` automatically for the start command
+- If Railway exposes `RAILWAY_PUBLIC_DOMAIN`, the backend will accept that host automatically

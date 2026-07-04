@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from datetime import timedelta
+from urllib.parse import urlparse
 import os
 from pathlib import Path
 
@@ -26,6 +27,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 
+def env_list(name, default=None):
+    raw_value = os.getenv(name, '')
+    items = [item.strip() for item in raw_value.split(',') if item.strip()]
+    if items:
+        return items
+    return default or []
+
+
+def origin_from_url(value):
+    if not value:
+        return None
+    parsed = urlparse(value if '://' in value else f'https://{value}')
+    if not parsed.netloc:
+        return None
+    return f'{parsed.scheme}://{parsed.netloc}'
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -35,26 +53,28 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-#v!g4+5ff#=$c*c@3+#cmft5$^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'True').lower() in ('1', 'true', 'yes', 'on')
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv('ALLOWED_HOSTS', '').split(',')
-    if host.strip()
-]
+ALLOWED_HOSTS = env_list('ALLOWED_HOSTS')
+
+railway_public_domain = os.getenv('RAILWAY_PUBLIC_DOMAIN')
+if railway_public_domain:
+    ALLOWED_HOSTS.append(railway_public_domain)
+
+if not ALLOWED_HOSTS and not DEBUG:
+    ALLOWED_HOSTS = ['*']
 
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
-CSRF_TRUSTED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
-    if origin.strip()
-]
+CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
 
-CORS_ALLOWED_ORIGINS = [
-    origin.strip()
-    for origin in os.getenv('CORS_ALLOWED_ORIGINS', '').split(',')
-    if origin.strip()
-]
+frontend_url = origin_from_url(os.getenv('FRONTEND_URL'))
+if frontend_url:
+    CSRF_TRUSTED_ORIGINS.append(frontend_url)
+
+CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS')
+
+if frontend_url:
+    CORS_ALLOWED_ORIGINS.append(frontend_url)
 
 if DEBUG and not CORS_ALLOWED_ORIGINS:
     CORS_ALLOWED_ORIGINS = ['http://localhost:5173', 'http://127.0.0.1:5173']
