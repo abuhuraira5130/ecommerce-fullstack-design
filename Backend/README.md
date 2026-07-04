@@ -33,3 +33,7 @@ Required environment variables:
 
 Start command:
 - `gunicorn myproject.wsgi:application`
+
+Railway note:
+- Set the service root directory to `Backend`
+- Railway can use the `Procfile` automatically for the start command
